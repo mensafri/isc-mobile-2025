@@ -8,6 +8,9 @@ export default function Index() {
 			<View style={styles.box}></View>
 			<View style={styles.box}></View>
 			<View style={styles.box}></View>
+			<View style={styles.box}></View>
+			<View style={styles.box}></View>
+			<View style={styles.box}></View>
 			<Button
 				title="Pindah Halaman"
 				onPress={() => router.push("/kedua")}
