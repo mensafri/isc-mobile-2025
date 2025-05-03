@@ -1,20 +1,38 @@
 import { useRouter } from "expo-router";
-import { Button, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
 	const router = useRouter();
+	const [data, setData] = useState();
+	const [angka, setAngka] = useState(0);
+	const [rubah, setRubah] = useState(0);
+	const [quotes, setQuotes] = useState();
+
+	useEffect(() => {
+		fetch("https://dummyjson.com/quotes")
+			.then((res) => res.json())
+			.then((res) => setQuotes(res.quotes[0]));
+	}, []);
+
+	console.log(quotes);
 	return (
 		<View style={styles.container}>
-			<View style={styles.box}></View>
-			<View style={styles.box}></View>
-			<View style={styles.box}></View>
-			<View style={styles.box}></View>
-			<View style={styles.box}></View>
-			<View style={styles.box}></View>
+			<Text style={{ fontSize: 30 }}>{angka}</Text>
 			<Button
-				title="Pindah Halaman"
-				onPress={() => router.push("/kedua")}
+				onPress={() => {
+					setAngka(angka + 1);
+				}}
+				title="+"
 			/>
+			<Button
+				onPress={() => {
+					setRubah(rubah + 1);
+				}}
+				title="Kembali ke 10"
+			/>
+			<Text style={{ fontSize: 30 }}>{quotes?.author}</Text>
+			<Text style={{ fontSize: 30 }}>{quotes?.quote}</Text>
 		</View>
 	);
 }
