@@ -1,38 +1,51 @@
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function Index() {
 	const router = useRouter();
-	const [data, setData] = useState();
-	const [angka, setAngka] = useState(0);
-	const [rubah, setRubah] = useState(0);
-	const [quotes, setQuotes] = useState();
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [isLogin, setIslogin] = useState(false);
+	const [message, setMessage] = useState("");
 
-	useEffect(() => {
-		fetch("https://dummyjson.com/quotes")
-			.then((res) => res.json())
-			.then((res) => setQuotes(res.quotes[0]));
-	}, []);
+	function login() {
+		if (username == "admin" && password == "admin") {
+			console.log("berhasil login");
+			setMessage("berhasil login");
+			setIslogin(true);
+			router.push("/kedua?nama=budi&umur=20");
+			router.push(`/kedua?nama=${username}&umur=${password}`);
+		} else {
+			console.log("gagal login");
+			setMessage("gagal login");
+			setIslogin(true);
+		}
+	}
 
-	console.log(quotes);
 	return (
 		<View style={styles.container}>
-			<Text style={{ fontSize: 30 }}>{angka}</Text>
-			<Button
-				onPress={() => {
-					setAngka(angka + 1);
-				}}
-				title="+"
+			<Text style={{ fontSize: 30 }}>Login Form</Text>
+			<TextInput
+				value={username}
+				onChangeText={setUsername}
+				placeholder={"placeholder"}
+				style={{ borderWidth: 1, padding: 10, width: 200 }}
+			/>
+			<TextInput
+				secureTextEntry={true}
+				value={password}
+				onChangeText={setPassword}
+				placeholder="Password"
+				style={{ borderWidth: 1, padding: 10, width: 200 }}
 			/>
 			<Button
-				onPress={() => {
-					setRubah(rubah + 1);
-				}}
-				title="Kembali ke 10"
+				title="Login"
+				onPress={login}
 			/>
-			<Text style={{ fontSize: 30 }}>{quotes?.author}</Text>
-			<Text style={{ fontSize: 30 }}>{quotes?.quote}</Text>
+			{isLogin ? (
+				<Text style={{ fontSize: 20, backgroundColor: "red" }}>{message}</Text>
+			) : null}
 		</View>
 	);
 }
@@ -43,7 +56,6 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
-		flexDirection: "row",
 		gap: 10,
 	},
 	box: { backgroundColor: "red", height: 100, width: 100 },
