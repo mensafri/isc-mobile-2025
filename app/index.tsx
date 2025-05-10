@@ -1,51 +1,61 @@
+import axios from "axios";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+	ActivityIndicator,
+	Button,
+	StyleSheet,
+	Text,
+	TextInput,
+	View,
+} from "react-native";
+
+type Task = {
+	id: number;
+	title: string;
+	description: string;
+};
 
 export default function Index() {
-	const router = useRouter();
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [isLogin, setIslogin] = useState(false);
-	const [message, setMessage] = useState("");
+	const [tasks, setTasks] = useState<Task[]>([]);
+	const [loading, setLoading] = useState(true);
 
-	function login() {
-		if (username == "admin" && password == "admin") {
-			console.log("berhasil login");
-			setMessage("berhasil login");
-			setIslogin(true);
-			router.push("/kedua?nama=budi&umur=20");
-			router.push(`/kedua?nama=${username}&umur=${password}`);
-		} else {
-			console.log("gagal login");
-			setMessage("gagal login");
-			setIslogin(true);
+	useEffect(() => {
+		async function getTasks() {
+			const response = await axios.get(
+				"https://3d92-114-10-122-100.ngrok-free.app/tasks",
+			);
+			setTasks(response.data);
+			setTimeout(() => {
+				setLoading(false);
+			}, 3000);
 		}
+		getTasks();
+	}, []);
+
+	console.log(tasks);
+
+	if (loading) {
+		return (
+			<View style={styles.container}>
+				<ActivityIndicator
+					size="large"
+					color="#0000ff"
+				/>
+			</View>
+		);
 	}
 
 	return (
 		<View style={styles.container}>
-			<Text style={{ fontSize: 30 }}>Login Form</Text>
-			<TextInput
-				value={username}
-				onChangeText={setUsername}
-				placeholder={"placeholder"}
-				style={{ borderWidth: 1, padding: 10, width: 200 }}
-			/>
-			<TextInput
-				secureTextEntry={true}
-				value={password}
-				onChangeText={setPassword}
-				placeholder="Password"
-				style={{ borderWidth: 1, padding: 10, width: 200 }}
-			/>
-			<Button
-				title="Login"
-				onPress={login}
-			/>
-			{isLogin ? (
-				<Text style={{ fontSize: 20, backgroundColor: "red" }}>{message}</Text>
-			) : null}
+			<Text style={{ fontSize: 30 }}>Tasks</Text>
+			{tasks.map((item) => (
+				<View key={item.id}>
+					<Text style={{ fontSize: 30 }}>{item.id}</Text>
+					<Text style={{ fontSize: 30 }}>{item.title}</Text>
+					<Text style={{ fontSize: 30 }}>{item.description}</Text>
+				</View>
+			))}
 		</View>
 	);
 }
