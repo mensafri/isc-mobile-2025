@@ -1,3 +1,5 @@
+import Komponen from "@/components/Komponen";
+import Task from "@/components/Task";
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -23,7 +25,7 @@ export default function Index() {
 	useEffect(() => {
 		async function getTasks() {
 			const response = await axios.get(
-				"https://3d92-114-10-122-100.ngrok-free.app/tasks",
+				"https://d217-114-10-4-212.ngrok-free.app/tasks",
 			);
 			setTasks(response.data);
 			setTimeout(() => {
@@ -48,13 +50,13 @@ export default function Index() {
 
 	return (
 		<View style={styles.container}>
+			<Komponen
+				nama="Sapri"
+				umur={12}
+			/>
 			<Text style={{ fontSize: 30 }}>Tasks</Text>
-			{tasks.map((item) => (
-				<View key={item.id}>
-					<Text style={{ fontSize: 30 }}>{item.id}</Text>
-					<Text style={{ fontSize: 30 }}>{item.title}</Text>
-					<Text style={{ fontSize: 30 }}>{item.description}</Text>
-				</View>
+			{tasks.map((task) => (
+				<Task item={task} />
 			))}
 		</View>
 	);
