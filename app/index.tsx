@@ -10,6 +10,7 @@ import {
 	Text,
 	TextInput,
 	View,
+	ScrollView,
 } from "react-native";
 
 type Task = {
@@ -24,9 +25,7 @@ export default function Index() {
 
 	useEffect(() => {
 		async function getTasks() {
-			const response = await axios.get(
-				"https://d217-114-10-4-212.ngrok-free.app/tasks",
-			);
+			const response = await axios.get("https://api-organiz.my.id/api/tasks");
 			setTasks(response.data);
 			setTimeout(() => {
 				setLoading(false);
@@ -55,9 +54,14 @@ export default function Index() {
 				umur={12}
 			/>
 			<Text style={{ fontSize: 30 }}>Tasks</Text>
-			{tasks.map((task) => (
-				<Task item={task} />
-			))}
+			<ScrollView>
+				{tasks.map((task) => (
+					<Task
+						item={task}
+						key={task.id}
+					/>
+				))}
+			</ScrollView>
 		</View>
 	);
 }
