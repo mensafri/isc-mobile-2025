@@ -11,6 +11,7 @@ import {
 	TextInput,
 	View,
 	ScrollView,
+	FlatList,
 } from "react-native";
 
 type Task = {
@@ -54,14 +55,18 @@ export default function Index() {
 				umur={12}
 			/>
 			<Text style={{ fontSize: 30 }}>Tasks</Text>
-			<ScrollView>
+			{/* <ScrollView>
 				{tasks.map((task) => (
 					<Task
 						item={task}
 						key={task.id}
 					/>
 				))}
-			</ScrollView>
+			</ScrollView> */}
+			<FlatList
+				data={tasks}
+				renderItem={({ item }) => <Task item={item} />}
+			/>
 		</View>
 	);
 }
