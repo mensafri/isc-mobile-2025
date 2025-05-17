@@ -12,6 +12,7 @@ import {
 	View,
 	ScrollView,
 	FlatList,
+	Alert,
 } from "react-native";
 
 type Task = {
@@ -35,7 +36,21 @@ export default function Index() {
 		getTasks();
 	}, []);
 
+	async function deleteTask(id: number) {
+		console.log(id);
+	}
+
 	console.log(tasks);
+
+	function onDelete(id: number) {
+		Alert.alert("Hapus", "Apakah anda yakin ingin menghapus task ini?", [
+			{ text: "Batal" },
+			{
+				text: "Hapus",
+				onPress: () => deleteTask(id),
+			},
+		]);
+	}
 
 	if (loading) {
 		return (
@@ -65,7 +80,12 @@ export default function Index() {
 			</ScrollView> */}
 			<FlatList
 				data={tasks}
-				renderItem={({ item }) => <Task item={item} />}
+				renderItem={({ item }) => (
+					<Task
+						item={item}
+						onDelete={() => onDelete(item.id)}
+					/>
+				)}
 			/>
 		</View>
 	);
