@@ -25,19 +25,21 @@ export default function Index() {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [loading, setLoading] = useState(true);
 
+	async function getTasks() {
+		const response = await axios.get("https://api-organiz.my.id/api/tasks");
+		setTasks(response.data);
+		setTimeout(() => {
+			setLoading(false);
+		}, 3000);
+	}
+
 	useEffect(() => {
-		async function getTasks() {
-			const response = await axios.get("https://api-organiz.my.id/api/tasks");
-			setTasks(response.data);
-			setTimeout(() => {
-				setLoading(false);
-			}, 3000);
-		}
 		getTasks();
 	}, []);
 
 	async function deleteTask(id: number) {
-		console.log(id);
+		await axios.delete(`https://api-organiz.my.id/api/tasks/${id}`);
+		await getTasks();
 	}
 
 	console.log(tasks);

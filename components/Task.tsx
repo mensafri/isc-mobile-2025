@@ -19,10 +19,22 @@ export default function Task({
 			<Text style={{ fontSize: 30 }}>{item.id}</Text>
 			<Text style={{ fontSize: 30 }}>{item.title}</Text>
 			<Text style={{ fontSize: 30 }}>{item.description}</Text>
-			<Button
-				title="Hapus"
-				onPress={onDelete}
-			/>
+			<View
+				style={{
+					flexDirection: "row",
+					gap: 10,
+					alignSelf: "center",
+					marginTop: 10,
+				}}>
+				<Button
+					title="Hapus"
+					onPress={onDelete}
+				/>
+				<Button
+					title="Edit"
+					color={"green"}
+				/>
+			</View>
 		</View>
 	);
 }
