@@ -24,6 +24,8 @@ type Task = {
 export default function Index() {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
 
 	async function getTasks() {
 		const response = await axios.get("https://api-organiz.my.id/api/tasks");
@@ -65,11 +67,36 @@ export default function Index() {
 		);
 	}
 
+	async function saveTask() {
+		await axios.post("https://api-organiz.my.id/api/tasks", {
+			title,
+			description,
+		});
+		await getTasks();
+		setTitle("");
+		setDescription("");
+	}
+
 	return (
 		<View style={styles.container}>
-			<Komponen
-				nama="Sapri"
-				umur={12}
+			<Text style={{ fontSize: 30 }}>Form Tasks</Text>
+			<Text style={{ fontSize: 20 }}>Title</Text>
+			<TextInput
+				value={title}
+				onChangeText={(text) => setTitle(text)}
+				style={styles.textinput}
+				placeholder="Title"
+			/>
+			<Text style={{ fontSize: 20 }}>Deskripsi</Text>
+			<TextInput
+				value={description}
+				onChangeText={(text) => setDescription(text)}
+				style={styles.textinput}
+				placeholder="Deskripsi"
+			/>
+			<Button
+				title="Simpan"
+				onPress={saveTask}
 			/>
 			<Text style={{ fontSize: 30 }}>Tasks</Text>
 			{/* <ScrollView>
@@ -102,4 +129,16 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	box: { backgroundColor: "red", height: 100, width: 100 },
+	textinput: {
+		width: "100%",
+		height: 40,
+		borderWidth: 1,
+		marginBottom: 10,
+		padding: 10,
+		borderRadius: 10,
+		borderColor: "#ccc",
+		fontSize: 16,
+		color: "#333",
+		backgroundColor: "#fff",
+	},
 });
