@@ -1,5 +1,6 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { useRouter } from "expo-router";
 
 type Task = {
 	id: number;
@@ -14,6 +15,8 @@ export default function Task({
 	item: Task;
 	onDelete: () => void;
 }) {
+	const router = useRouter();
+
 	return (
 		<View key={item.id}>
 			<Text style={{ fontSize: 30 }}>{item.id}</Text>
@@ -33,6 +36,7 @@ export default function Task({
 				<Button
 					title="Edit"
 					color={"green"}
+					onPress={() => router.push(`/task/${item.id}`)}
 				/>
 			</View>
 		</View>
